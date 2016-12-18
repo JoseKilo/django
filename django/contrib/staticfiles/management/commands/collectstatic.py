@@ -279,7 +279,7 @@ class Command(BaseCommand):
                     # Skip the file if the source file is younger
                     # Avoid sub-second precision (see #14665, #19540)
                     if (target_last_modified.replace(microsecond=0) >= source_last_modified.replace(microsecond=0) and
-                            full_path and not (self.symlink ^ os.path.islink(full_path))):
+                            (not full_path or not (self.symlink ^ os.path.islink(full_path)))):
                         if prefixed_path not in self.unmodified_files:
                             self.unmodified_files.append(prefixed_path)
                         self.log("Skipping '%s' (not modified)" % path)
